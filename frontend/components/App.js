@@ -1,10 +1,36 @@
-import React from 'react'
+import React from 'react';
+import Form from './Form';
+import TodoList from './TodoList'
+
+let id = 0
+let getId = () => ++id;
+
+const initialTodos = [
+  { id: getId(), name: 'walk', completed: true},
+  { id: getId(), name: 'jog', completed: false},
+  { id: getId(), name: 'run', completed: false},
+]
 
 export default class App extends React.Component {
+  state = {
+    todos: initialTodos
+  }
+
+  toggleCompletion = id => {
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.map(td =>{
+        if (id ==td.id) return { ...td, completed: !td.completed }
+        return td
+      })
+    })
+  }
+
   render() {
     return (
       <div>
-        Todo App
+        <TodoList todos={this.state.todos} toggleCompletion={this.toggleCompletion}/>
+        <Form />
       </div>
     )
   }
